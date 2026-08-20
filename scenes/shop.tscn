@@ -1,0 +1,337 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/shop.gd" id="1_shop"]
+[ext_resource type="Script" path="res://scripts/shop_inn_banner.gd" id="2_banner"]
+
+[node name="Shop" type="CanvasLayer"]
+layer = 20
+process_mode = 3
+script = ExtResource("1_shop")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.025, 0.015, 0.72)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(600, 740)
+layout_mode = 2
+
+[node name="OuterMargin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="MainVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Banner" type="Control" parent="Center/Panel/OuterMargin/MainVBox"]
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+script = ExtResource("2_banner")
+
+[node name="ContentMargin" type="MarginContainer" parent="Center/Panel/OuterMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="ContentVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Scroll" type="ScrollContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 11
+
+[node name="Header" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="TitleRow" type="HBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Header"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Header/TitleRow"]
+layout_mode = 2
+text = "密林客棧"
+horizontal_alignment = 1
+
+[node name="ZoneBadge" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Header/TitleRow"]
+layout_mode = 2
+text = "密林"
+
+[node name="Subtitle" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Header"]
+layout_mode = 2
+text = "櫃檯 · 交易與補給"
+horizontal_alignment = 1
+
+[node name="Accent" type="ColorRect" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Header"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(1, 0.776, 0.365, 1)
+
+[node name="Wallet" type="HBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GoldCard" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GoldVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/GoldCard"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="GoldCap" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/GoldCard/GoldVBox"]
+layout_mode = 2
+text = "金幣"
+horizontal_alignment = 1
+
+[node name="Gold" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/GoldCard/GoldVBox"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="WoodCard" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.4
+
+[node name="WoodVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/WoodCard"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="WoodCap" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/WoodCard/WoodVBox"]
+layout_mode = 2
+text = "木材庫存"
+horizontal_alignment = 1
+
+[node name="Wood" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/WoodCard/WoodVBox"]
+layout_mode = 2
+text = "（空）"
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="ValueCard" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ValueVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/ValueCard"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ValueCap" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/ValueCard/ValueVBox"]
+layout_mode = 2
+text = "整批估價"
+horizontal_alignment = 1
+
+[node name="Value" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/Wallet/ValueCard/ValueVBox"]
+layout_mode = 2
+text = "0 金"
+horizontal_alignment = 1
+
+[node name="ContractCard" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+
+[node name="ContractVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ContractHeader" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard/ContractVBox"]
+layout_mode = 2
+text = "委託進度"
+horizontal_alignment = 1
+
+[node name="ContractBar" type="Control" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard/ContractVBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Bg" type="ColorRect" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard/ContractVBox/ContractBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.05, 0.035, 0.95)
+
+[node name="Fill" type="ColorRect" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard/ContractVBox/ContractBar"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 14.0
+color = Color(0.45, 0.68, 0.82, 1)
+
+[node name="ContractDetail" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/ContractCard/ContractVBox"]
+layout_mode = 2
+text = "委託詳情"
+horizontal_alignment = 1
+
+[node name="StatusCard" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+
+[node name="StatusVBox" type="VBoxContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="StatusHeader" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox"]
+layout_mode = 2
+text = "裝備狀態"
+horizontal_alignment = 1
+
+[node name="AxeRow" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox"]
+layout_mode = 2
+text = "鈍斧"
+horizontal_alignment = 1
+
+[node name="DurBar" type="Control" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Bg" type="ColorRect" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox/DurBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.05, 0.035, 0.95)
+
+[node name="Fill" type="ColorRect" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox/DurBar"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 26.0
+color = Color(0.78, 0.55, 0.22, 1)
+
+[node name="Text" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox/DurBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "耐力 0 / 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsRow" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/StatusCard/StatusVBox"]
+layout_mode = 2
+text = "移速 · 砍樹 · 跳躍"
+horizontal_alignment = 1
+
+[node name="Footnote" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "旅路資訊"
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="SepTrade" type="HSeparator" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TradeTitle" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "◆ 交易"
+horizontal_alignment = 1
+
+[node name="Sell" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "出售全部木材"
+
+[node name="Contract" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "繳交委託"
+
+[node name="SepGear" type="HSeparator" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+
+[node name="GearTitle" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "◆ 裝備與強化"
+horizontal_alignment = 1
+
+[node name="Repair" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "修理斧頭"
+
+[node name="Upgrade" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "升級斧頭"
+
+[node name="UpgradeGrid" type="GridContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="Chop" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/UpgradeGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "砍樹"
+
+[node name="Move" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/UpgradeGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "移速"
+
+[node name="Jump" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox/UpgradeGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "跳躍"
+
+[node name="SepTravel" type="HSeparator" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TravelTitle" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "◆ 旅路"
+horizontal_alignment = 1
+
+[node name="Recall" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "設為 R 回程客棧"
+
+[node name="Slash" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "購買林道必殺"
+
+[node name="Close" type="Button" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/Scroll/VBox"]
+layout_mode = 2
+text = "離開"
+
+[node name="HintBar" type="PanelContainer" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox"]
+layout_mode = 2
+
+[node name="Hint" type="Label" parent="Center/Panel/OuterMargin/MainVBox/ContentMargin/ContentVBox/HintBar"]
+layout_mode = 2
+text = "快捷鍵提示"
+horizontal_alignment = 1
+autowrap_mode = 3

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/thief_bird.gd" id="1_bird"]
+
+[node name="ThiefBird" type="Area2D"]
+script = ExtResource("1_bird")

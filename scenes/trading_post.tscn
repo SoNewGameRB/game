@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/trading_post.gd" id="1_station"]
+[ext_resource type="Script" path="res://scripts/station_visual.gd" id="2_visual"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(240, 160)
+
+[node name="TradingPost" type="Area2D"]
+z_index = 4
+collision_layer = 8
+collision_mask = 4
+monitoring = true
+monitorable = false
+script = ExtResource("1_station")
+
+[node name="Visual" type="Node2D" parent="."]
+position = Vector2(0, -8)
+script = ExtResource("2_visual")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -70)
+shape = SubResource("RectangleShape2D_zone")
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -90.0
+offset_top = -250.0
+offset_right = 110.0
+offset_bottom = -222.0
+text = "按 E 打開驛站"
+horizontal_alignment = 1

@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_world"]
+[ext_resource type="Script" path="res://scripts/backdrop.gd" id="2_backdrop"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/trading_post.tscn" id="4_station"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/shop.tscn" id="6_shop"]
+[ext_resource type="PackedScene" path="res://scenes/ending.tscn" id="7_ending"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="8_pause"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(14400, 80)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_world")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.92, 0.88, 0.82, 1)
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -30
+
+[node name="Backdrop" type="Node2D" parent="Background"]
+script = ExtResource("2_backdrop")
+
+[node name="Decor" type="Node2D" parent="."]
+z_index = 1
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(7200, 600)
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="TradingPost" parent="." instance=ExtResource("4_station")]
+position = Vector2(160, 560)
+
+[node name="Trees" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(210, 558)
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="Shop" parent="." instance=ExtResource("6_shop")]
+
+[node name="Ending" parent="." instance=ExtResource("7_ending")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("8_pause")]

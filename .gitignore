@@ -1,0 +1,20 @@
+# Godot 4+
+.godot/
+*.tmp
+*.log
+
+# Export
+export/
+*.exe
+*.pck
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+
+# Secrets
+.env
+.env.*

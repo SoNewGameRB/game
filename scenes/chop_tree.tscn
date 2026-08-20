@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/chop_tree.gd" id="1_tree"]
+[ext_resource type="Script" path="res://scripts/tree_visual.gd" id="2_visual"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trunk"]
+size = Vector2(48, 200)
+
+[node name="ChopTree" type="StaticBody2D" groups=["chop_trees"]]
+collision_layer = 2
+collision_mask = 0
+z_index = 2
+script = ExtResource("1_tree")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -90)
+shape = SubResource("RectangleShape2D_trunk")
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+
+[node name="WarnLabel" type="Label" parent="."]
+offset_left = -80.0
+offset_top = -300.0
+offset_right = 80.0
+offset_bottom = -276.0
+horizontal_alignment = 1
+text = "樹苗長大中…"
+
+[node name="HpBar" type="Node2D" parent="."]
+position = Vector2(-32, -460)
+
+[node name="Bg" type="ColorRect" parent="HpBar"]
+offset_right = 56.0
+offset_bottom = 7.0
+color = Color(0.1, 0.07, 0.05, 0.88)
+
+[node name="Fill" type="ColorRect" parent="HpBar"]
+offset_right = 56.0
+offset_bottom = 7.0
+color = Color(0.45, 0.78, 0.38, 1)

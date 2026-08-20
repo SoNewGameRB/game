@@ -1,0 +1,123 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer" groups=["hud"]]
+layer = 40
+process_mode = 3
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 78.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.05, 0.03, 0.02, 0.72)
+
+[node name="Gold" type="Label" parent="Root"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 40.0
+text = "金幣  0"
+
+[node name="Wood" type="Label" parent="Root"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 42.0
+offset_right = 240.0
+offset_bottom = 70.0
+text = "木材  0"
+
+[node name="DurBar" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 250.0
+offset_top = 12.0
+offset_right = -180.0
+offset_bottom = 42.0
+grow_horizontal = 2
+
+[node name="Bg" type="ColorRect" parent="Root/DurBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.08, 0.05, 0.9)
+
+[node name="Fill" type="ColorRect" parent="Root/DurBar"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 30.0
+color = Color(0.78, 0.55, 0.22, 1)
+
+[node name="Text" type="Label" parent="Root/DurBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "斧頭耐力"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Axe" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 250.0
+offset_top = 44.0
+offset_right = -180.0
+offset_bottom = 72.0
+grow_horizontal = 2
+text = "鈍斧"
+horizontal_alignment = 1
+
+[node name="Zone" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 22.0
+offset_right = -16.0
+offset_bottom = 56.0
+horizontal_alignment = 2
+text = "近林"
+
+[node name="Combo" type="Label" parent="Root"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 86.0
+offset_right = 280.0
+offset_bottom = 114.0
+text = ""
+
+[node name="Toast" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 80.0
+offset_top = 86.0
+offset_right = -80.0
+offset_bottom = 130.0
+grow_horizontal = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = ""

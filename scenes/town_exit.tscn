@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/town_exit.gd" id="1_exit"]
+[ext_resource type="Script" path="res://scripts/town_visual.gd" id="2_visual"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(280, 180)
+
+[node name="TownExit" type="Area2D"]
+z_index = 5
+collision_layer = 8
+collision_mask = 4
+monitoring = true
+monitorable = false
+script = ExtResource("1_exit")
+
+[node name="Visual" type="Node2D" parent="."]
+position = Vector2(40, -8)
+script = ExtResource("2_visual")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(40, -70)
+shape = SubResource("RectangleShape2D_zone")
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -80.0
+offset_top = -220.0
+offset_right = 220.0
+offset_bottom = -188.0
+text = "按 E　離開樹林，回到城鎮"
+horizontal_alignment = 1
