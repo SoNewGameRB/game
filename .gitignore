@@ -9,6 +9,7 @@ export/
 *.apk
 *.pck
 !build/web/*.pck
+!docs/*.pck
 
 # Keep build/web for portfolio hosting; ignore other build targets
 build/*
