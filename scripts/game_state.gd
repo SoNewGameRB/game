@@ -1195,8 +1195,13 @@ var _ui_font: Font
 
 func ui_font(_size: int) -> Font:
 	if _ui_font == null:
-		var font := SystemFont.new()
-		font.font_names = PackedStringArray(["Noto Sans TC", "Microsoft JhengHei", "Microsoft YaHei"])
-		font.font_weight = 700
-		_ui_font = font
+		# 內嵌字型：Web 無法依賴系統中文字型
+		const FONT_PATH := "res://assets/fonts/NotoSansCJKtc-Bold.otf"
+		if ResourceLoader.exists(FONT_PATH):
+			_ui_font = load(FONT_PATH) as Font
+		if _ui_font == null:
+			var font := SystemFont.new()
+			font.font_names = PackedStringArray(["Noto Sans TC", "Microsoft JhengHei", "Microsoft YaHei", "Noto Sans CJK TC"])
+			font.font_weight = 700
+			_ui_font = font
 	return _ui_font

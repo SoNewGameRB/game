@@ -9,6 +9,8 @@ func _ready() -> void:
 	for i in 6:
 		var p := AudioStreamPlayer.new()
 		p.bus = "Master"
+		# Web Sample 模式不支援程序化 WAV，強制用 Stream（1）
+		p.playback_type = 1 as AudioServer.PlaybackType
 		add_child(p)
 		_players.append(p)
 

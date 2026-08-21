@@ -44,6 +44,9 @@ func _replay() -> void:
 
 
 func _quit() -> void:
+	if OS.has_feature("web"):
+		GameState.notify("可以關閉這個分頁結束遊戲。", Color(0.9, 0.82, 0.55))
+		return
 	get_tree().quit()
 
 

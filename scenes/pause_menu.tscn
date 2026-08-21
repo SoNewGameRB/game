@@ -32,9 +32,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -340.0
-offset_top = -310.0
+offset_top = -330.0
 offset_right = 340.0
-offset_bottom = 310.0
+offset_bottom = 330.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -50,55 +50,60 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 22
 theme_override_constants/margin_bottom = 16
 
-[node name="Scroll" type="ScrollContainer" parent="Root/Panel/Margin"]
+[node name="MainVBox" type="VBoxContainer" parent="Root/Panel/Margin"]
 layout_mode = 2
-horizontal_scroll_mode = 0
+theme_override_constants/separation = 10
 
-[node name="VBox" type="VBoxContainer" parent="Root/Panel/Margin/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="Title" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Title" type="Label" parent="Root/Panel/Margin/MainVBox"]
 layout_mode = 2
 text = "選單"
 horizontal_alignment = 1
 
-[node name="Resume" type="Button" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Resume" type="Button" parent="Root/Panel/Margin/MainVBox"]
 layout_mode = 2
 text = "繼續遊戲　Esc"
 
-[node name="Mute" type="Button" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Mute" type="Button" parent="Root/Panel/Margin/MainVBox"]
 layout_mode = 2
 text = "音效　開啟"
 
-[node name="HelpTitle" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Quit" type="Button" parent="Root/Panel/Margin/MainVBox"]
+layout_mode = 2
+text = "離開遊戲"
+
+[node name="Scroll" type="ScrollContainer" parent="Root/Panel/Margin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="Root/Panel/Margin/MainVBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="HelpTitle" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 text = "操作說明"
 
-[node name="Help" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Help" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 autowrap_mode = 3
 text = ""
 
-[node name="StatusTitle" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="StatusTitle" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 text = "目前狀態"
 
-[node name="Status" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Status" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 autowrap_mode = 3
 text = ""
 
-[node name="AchTitle" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="AchTitle" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 text = "成就"
 
-[node name="Ach" type="Label" parent="Root/Panel/Margin/Scroll/VBox"]
+[node name="Ach" type="Label" parent="Root/Panel/Margin/MainVBox/Scroll/VBox"]
 layout_mode = 2
 autowrap_mode = 3
 text = ""
-
-[node name="Quit" type="Button" parent="Root/Panel/Margin/Scroll/VBox"]
-layout_mode = 2
-text = "離開遊戲"
