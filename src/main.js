@@ -1528,7 +1528,7 @@ const UPG = {
 const UPK = ['sneak', 'net', 'radar'];
 function openUpgrade() {
   if (UPK.every(k => up[k] >= CFG.UP_MAX)) { addScore(500); showToast('已全部升滿！額外 +500', 1500); afterUpgrade(); return; }
-  state = 'upgrade'; document.exitPointerLock(); saveMeta(); resetTouch();
+  state = 'upgrade'; exitLock(); saveMeta(); resetTouch();
   const box = $('upCards'); box.innerHTML = '';
   UPK.forEach((k, i) => {
     const u = UPG[k], lv = up[k], max = lv >= CFG.UP_MAX;
@@ -1554,6 +1554,7 @@ function updateUpsHud() {
 }
 
 // ---------------------------------------------------------------- 流程 (開始/死亡/過關)
+function exitLock() { try { if (document.exitPointerLock) document.exitPointerLock(); } catch (e) { /* iOS Safari 沒有 Pointer Lock */ } }
 const show = id => $(id).classList.add('show'), hide = id => $(id).classList.remove('show');
 function lockPointer() { if (debugNoLock || touchMode) return; try { const p = canvas.requestPointerLock(); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ignore */ } }
 function resume() { state = 'playing'; hide('pause'); $('hud').classList.add('show'); lockPointer(); }
@@ -1566,7 +1567,7 @@ function startGame(noLock) {
   startStage(1); resume();
 }
 function stageClear() {
-  state = 'clear'; document.exitPointerLock(); resetTouch();
+  state = 'clear'; exitLock(); resetTouch();
   const timeBonus = Math.max(0, Math.round((240 - stageTime) * 10)), base = 2000 * stage;
   const perfect = !stageSeen, total = Math.round((base + timeBonus) * (perfect ? 1.5 : 1) * (mod.bonus || 1));
   addScore(total); if (score > meta.best) meta.best = score; saveMeta();
@@ -1581,7 +1582,7 @@ const DEAD_Q = {
 function die(reason) {
   if (state !== 'playing') return;
   state = 'dead'; show('dead');
-  try { document.exitPointerLock(); sndDie(); resetTouch(); } catch (e) { reportErr(e + '', 'die'); }
+  try { exitLock(); sndDie(); resetTouch(); } catch (e) { reportErr(e + '', 'die'); }
   $('vig').style.opacity = 0;
   $('deadQuote').textContent = '吉娃娃主管：「' + pick(DEAD_Q[reason] || DEAD_Q.seen) + '」';
   try { saveScore(); if (score > meta.best) meta.best = score; saveMeta(); } catch (e) { reportErr(e + '', 'save'); }
