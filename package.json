@@ -6,7 +6,8 @@
     "build": "esbuild src/main.js --bundle --minify --format=iife --loader:.glb=binary --outfile=game.js"
   },
   "dependencies": {
-    "three": "^0.186.1"
+    "three": "^0.186.1",
+    "@netlify/blobs": "^8.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"

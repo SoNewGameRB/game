@@ -1586,7 +1586,7 @@ function die(reason) {
   saveScore(); if (score > meta.best) meta.best = score; saveMeta();
   $('deadCoins').textContent = `本局賺到 ${runCoins} 金幣（持有 ${meta.coins}）`;
   $('deadScore').textContent = `${playerName}　抵達第 ${stage} 關　總分 ${score}`;
-  $('deadLb').innerHTML = lbTable(lastRank);
+  showLb($('deadLb'), playerName, { name: playerName, score, stage });
   show('dead');
   const q = $('deadQuote').textContent; say(q.replace(/^.*「|」$/g, ''), 1);
 }
@@ -1599,12 +1599,29 @@ function saveScore() {
   try { localStorage.setItem(LB_KEY, JSON.stringify(top)); } catch (e) { /* ignore */ }
   lastRank = top.findIndex(e => e.t === entry.t);
 }
-function lbTable(hl = -1) {
-  const lb = loadLb().slice(0, 10);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let netLb = null, netLbOk = false;
+function lbTable(hl = -1, list = null) {
+  const lb = (list || loadLb()).slice(0, 10), tag = list ? '🌐 全公司排行榜' : '📱 本機排行榜（連線失敗，僅顯示這台裝置的紀錄）';
   if (!lb.length) return '<p class="sub">還沒有紀錄，快去抓狗！</p>';
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  return '<table><tr><th>#</th><th>名字</th><th>分數</th><th>關卡</th><th>日期</th></tr>' + lb.map((e, i) =>
+  return `<p class="sub" style="margin:0 0 6px">${tag}</p><table><tr><th>#</th><th>名字</th><th>分數</th><th>關卡</th><th>日期</th></tr>` + lb.map((e, i) =>
     `<tr class="${i === hl ? 'me' : ''}"><td>${i + 1}</td><td>${esc(e.name)}</td><td>${e.score}</td><td>${e.stage}</td><td>${new Date(e.t).toLocaleDateString()}</td></tr>`).join('') + '</table>';
+}
+// 共用排行榜（Netlify Function /api/scores）；失敗時退回本機榜
+async function fetchNetLb(post) {
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 6000);
+  try {
+    const r = await fetch('/api/scores', post ? { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(post), signal: ctl.signal } : { signal: ctl.signal });
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json(); netLb = j.top; netLbOk = true; return j;
+  } catch (e) { netLbOk = false; return null; } finally { clearTimeout(to); }
+}
+async function showLb(el, hlName = null, post = null) {
+  el.innerHTML = lbTable(-1) + '<p class="sub">連線中…</p>';
+  const j = await fetchNetLb(post);
+  if (!j) { el.innerHTML = lbTable(post ? lastRank : -1); return; }
+  const hl = hlName ? j.top.findIndex(e => e.name === hlName && e.score === post.score) : -1;
+  el.innerHTML = lbTable(hl, j.top) + (post && j.rank > 10 ? `<p class="sub">你的最佳名次：第 ${j.rank} 名</p>` : '');
 }
 
 // ---------------------------------------------------------------- 玩家更新
@@ -1892,7 +1909,7 @@ $('helpClose').onclick = () => hide('help');
 $('startBtn').onclick = () => { playerName = ($('nameIn').value || '').trim() || '捕獸員'; hide('menu'); show('brief'); state = 'brief'; };
 $('againBtn').onclick = () => startGame(debugNoLock);
 $('menuBtn').onclick = () => { hide('dead'); show('menu'); $('hud').classList.remove('show'); state = 'menu'; clearDogs(); };
-$('lbBtn').onclick = () => { $('lbBody').innerHTML = lbTable(); show('lbOv'); };
+$('lbBtn').onclick = () => { show('lbOv'); showLb($('lbBody')); };
 $('lbClose').onclick = () => hide('lbOv');
 $('resumeBtn').onclick = () => { if (state === 'paused') resume(); };
 $('quitBtn').onclick = () => { hide('pause'); $('hud').classList.remove('show'); show('menu'); state = 'menu'; clearDogs(); };
