@@ -1528,7 +1528,7 @@ const UPG = {
 const UPK = ['sneak', 'net', 'radar'];
 function openUpgrade() {
   if (UPK.every(k => up[k] >= CFG.UP_MAX)) { addScore(500); showToast('已全部升滿！額外 +500', 1500); afterUpgrade(); return; }
-  state = 'upgrade'; document.exitPointerLock(); saveMeta();
+  state = 'upgrade'; document.exitPointerLock(); saveMeta(); resetTouch();
   const box = $('upCards'); box.innerHTML = '';
   UPK.forEach((k, i) => {
     const u = UPG[k], lv = up[k], max = lv >= CFG.UP_MAX;
@@ -1558,7 +1558,7 @@ const show = id => $(id).classList.add('show'), hide = id => $(id).classList.rem
 function lockPointer() { if (debugNoLock || touchMode) return; try { const p = canvas.requestPointerLock(); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ignore */ } }
 function resume() { state = 'playing'; hide('pause'); $('hud').classList.add('show'); lockPointer(); }
 function startGame(noLock) {
-  debugNoLock = !!noLock;
+  debugNoLock = !!noLock; resetTouch();
   playerName = ($('nameIn').value || '').trim() || '捕獸員';
   try { localStorage.setItem(NAME_KEY, playerName); } catch (e) { /* ignore */ }
   settings.voice = $('voiceCk').checked;
@@ -1566,7 +1566,7 @@ function startGame(noLock) {
   startStage(1); resume();
 }
 function stageClear() {
-  state = 'clear'; document.exitPointerLock();
+  state = 'clear'; document.exitPointerLock(); resetTouch();
   const timeBonus = Math.max(0, Math.round((240 - stageTime) * 10)), base = 2000 * stage;
   const perfect = !stageSeen, total = Math.round((base + timeBonus) * (perfect ? 1.5 : 1) * (mod.bonus || 1));
   addScore(total); if (score > meta.best) meta.best = score; saveMeta();
@@ -1580,7 +1580,7 @@ const DEAD_Q = {
 };
 function die(reason) {
   if (state !== 'playing') return;
-  state = 'dead'; document.exitPointerLock(); sndDie();
+  state = 'dead'; document.exitPointerLock(); sndDie(); resetTouch();
   $('vig').style.opacity = 0;
   $('deadQuote').textContent = '吉娃娃主管：「' + pick(DEAD_Q[reason] || DEAD_Q.seen) + '」';
   saveScore(); if (score > meta.best) meta.best = score; saveMeta();
@@ -1855,8 +1855,17 @@ function btnAct(act, down) {
   else if (act === 'sneak') { if (down) { if (up.sneak <= 0) return; TS.sneak = !TS.sneak; $('bSneak').classList.toggle('on', TS.sneak); } }
 }
 const tl = $('touch');
+const resetTouch = () => releaseTouch();
+// 清掉已經不存在的手指（死亡/暫停/切換畫面時 touchend 可能漏掉，會讓搖桿或視角永遠被佔住）
+function pruneTouches(list) {
+  const live = new Set(); for (const t of list) live.add(t.identifier);
+  if (tstate.stick && !live.has(tstate.stick.id)) { tstate.stick = null; TS.x = TS.y = TS.mag = 0; $('stickBase').style.display = 'none'; $('stickKnob').style.display = 'none'; }
+  if (tstate.look && !live.has(tstate.look.id)) tstate.look = null;
+  for (const [id, a] of [...tstate.btns]) if (!live.has(id)) { tstate.btns.delete(id); btnAct(a, false); document.querySelectorAll(`.tb[data-act="${a}"]`).forEach(b => b.classList.remove('hold')); }
+}
 tl.addEventListener('touchstart', e => {
-  if (state !== 'playing') return; e.preventDefault();
+  if (state !== 'playing') { resetTouch(); return; } e.preventDefault();
+  pruneTouches([...e.touches].filter(t => ![...e.changedTouches].some(c => c.identifier === t.identifier)));
   for (const t of e.changedTouches) {
     const el = t.target.closest ? t.target.closest('[data-act]') : null;
     if (el) { tstate.btns.set(t.identifier, el.dataset.act); el.classList.add('hold'); btnAct(el.dataset.act, true); continue; }
