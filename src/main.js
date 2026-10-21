@@ -1580,15 +1580,16 @@ const DEAD_Q = {
 };
 function die(reason) {
   if (state !== 'playing') return;
-  state = 'dead'; document.exitPointerLock(); sndDie(); resetTouch();
+  state = 'dead'; show('dead');
+  try { document.exitPointerLock(); sndDie(); resetTouch(); } catch (e) { reportErr(e + '', 'die'); }
   $('vig').style.opacity = 0;
   $('deadQuote').textContent = '吉娃娃主管：「' + pick(DEAD_Q[reason] || DEAD_Q.seen) + '」';
-  saveScore(); if (score > meta.best) meta.best = score; saveMeta();
+  try { saveScore(); if (score > meta.best) meta.best = score; saveMeta(); } catch (e) { reportErr(e + '', 'save'); }
   $('deadCoins').textContent = `本局賺到 ${runCoins} 金幣（持有 ${meta.coins}）`;
   $('deadScore').textContent = `${playerName}　抵達第 ${stage} 關　總分 ${score}`;
-  showLb($('deadLb'), playerName, { name: playerName, score, stage });
   show('dead');
-  const q = $('deadQuote').textContent; say(q.replace(/^.*「|」$/g, ''), 1);
+  try { showLb($('deadLb'), playerName, { name: playerName, score, stage }); } catch (e) { reportErr(e + '', 'lb'); }
+  try { const q = $('deadQuote').textContent; say(q.replace(/^.*「|」$/g, ''), 1); } catch (e) { reportErr(e + '', 'say'); }
 }
 // ---------------------------------------------------------------- 排行榜
 function loadLb() { try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; } catch (e) { return []; } }
@@ -1971,13 +1972,26 @@ $('briefBack').onclick = () => { hide('brief'); show('menu'); state = 'menu'; };
 $('briefGo').onclick = () => { hide('brief'); touchStartFx(); startGame(false); };
 
 // ---------------------------------------------------------------- 主迴圈
+
+// 除錯：任何錯誤都顯示在畫面上（方便回報），不讓遊戲無聲卡死
+let errBox = null, errN = 0;
+function reportErr(msg, where) {
+  try {
+    console.error('[game]', where, msg);
+    if (errN++ > 3) return;
+    if (!errBox) { errBox = document.createElement('div'); errBox.style.cssText = 'position:fixed;left:6px;right:6px;bottom:6px;z-index:99999;background:rgba(120,0,0,.92);color:#fff;font:12px/1.4 monospace;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-all;max-height:40vh;overflow:auto;user-select:text'; errBox.onclick = () => { errBox.style.display = 'none'; }; document.body.appendChild(errBox); }
+    errBox.style.display = 'block'; errBox.textContent = '⚠ 發生錯誤（點一下關閉，請截圖回報）\n[' + where + '] ' + msg;
+  } catch (e) { /* ignore */ }
+}
+window.addEventListener('error', e => reportErr((e.message || '') + ' @' + (e.filename || '').split('/').pop() + ':' + e.lineno + ':' + e.colno, 'error'));
+window.addEventListener('unhandledrejection', e => reportErr(String(e.reason && (e.reason.stack || e.reason.message) || e.reason).slice(0, 300), 'promise'));
 const clock = new THREE.Clock(); let T = 0, bubbleT = 0;
 function frame() {
   requestAnimationFrame(frame);
   const dt = Math.min(0.05, clock.getDelta()); T += dt;
   { const inMenu = state === 'menu' || state === 'brief'; if (worldGroup.visible === inMenu) worldGroup.visible = !inMenu; }
   { const sh = state === 'playing'; if (hudCache._tl !== sh) { hudCache._tl = sh; $('touch').classList.toggle('show', sh); if (!sh) releaseTouch(); } }
-  if (state === 'playing') updateGame(dt, T);
+  if (state === 'playing') { try { updateGame(dt, T); } catch (e) { reportErr((e && e.stack || e) + '', 'update'); } }
   else if (state === 'menu' || state === 'brief') { if (mod !== MODS.none) { mod = MODS.none; applyMod(); } setTxt('mCoins', meta.coins); setTxt('mBest', meta.best); bubbleT -= dt; if (bubbleT <= 0) { bubbleT = 3.4; const bb = $('bubble'); bb.style.opacity = 0; setTimeout(() => { bb.textContent = pick(CHI_Q); bb.style.opacity = 1; }, 250); } updateShowcase(dt, T); }
   renderer.render(scene, camera);
 }
